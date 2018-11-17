@@ -41,13 +41,93 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
+import java.util.Date;
+
+import java.util.Timer;
+
+import java.util.TimerTask;
+
 
 public class Maps2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
     private static final int REQUEST_LOCATION_PERMISSION = 123;
+    //private FusedLocationProviderClient mFusedLocationProviderClient;
+
     private GoogleMap mMap;
     private String username;
     private String password;
+
+
+    class ClassExecutingTask {
+        long delay = 1000 * 10; // delay in milliseconds
+        LoopTask task = new LoopTask();
+        Timer timer = new Timer("TaskName");
+
+
+
+        public void start() {
+            timer.cancel();
+            timer = new Timer("TaskName");
+            Date executionDate = new Date(); // no params = now
+            timer.scheduleAtFixedRate(task, executionDate, delay);
+        }
+
+        private class LoopTask extends TimerTask {
+            public void run() {
+
+                getPinpoints();
+            }
+
+            private void getPinpoints() {
+                RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+                String BASEURL ="https://murmuring-journey-83684.herokuapp.com";
+                String PINPOINS ="/pinpoints";
+
+
+
+                JsonArrayRequest objectRequest = new JsonArrayRequest(
+                        Request.Method.GET,
+                        BASEURL+PINPOINS,
+                        null,
+
+                        new Response.Listener<JSONArray>() {
+                            @Override
+                            public void onResponse(JSONArray response) {
+                                try{
+                                    // Loop through the array elements
+                                    mMap.clear();
+                                    for(int i=0;i<response.length();i++){
+                                        // Get current json object
+                                        JSONObject pinpoint = response.getJSONObject(i);
+                                        LatLng pinpointLatLng = new LatLng(pinpoint.getDouble("latitude"), pinpoint.getDouble("longitude"));
+                                        mMap.addMarker(new MarkerOptions().position(pinpointLatLng).title(pinpoint.getString("title")));
+                                    }
+                                }catch (JSONException e){
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.d("Eroare::::",error.toString());
+                    }
+                }){
+                    @Override
+                    public Map<String, String> getHeaders() throws AuthFailureError {
+                        Map<String,String> params =  new HashMap<>();
+                        String token = username+":"+password;
+                        String finalToken = new String(Base64.encode(token.getBytes(),Base64.DEFAULT));
+                        Log.d("finalToken", finalToken);
+                        params.put("Authorization","Basic "+ finalToken);
+                        //..add other headers
+                        return params;
+                    }
+                };
+
+                queue.add(objectRequest);
+            }
+        }
+    }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
@@ -56,60 +136,14 @@ public class Maps2Activity extends AppCompatActivity
         enableMyLocation();
         // Add a marker in Sydney and move the camera
 
-        getPinpoints();
-
+        ClassExecutingTask executingTask = new ClassExecutingTask();
+        executingTask.start();
 
     }
 
 
 
-    private void getPinpoints() {
-        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
-        String BASEURL ="https://murmuring-journey-83684.herokuapp.com";
-        String PINPOINS ="/pinpoints";
 
-
-
-        JsonArrayRequest objectRequest = new JsonArrayRequest(
-                Request.Method.GET,
-                BASEURL+PINPOINS,
-                null,
-
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try{
-                            // Loop through the array elements
-                            for(int i=0;i<response.length();i++){
-                                // Get current json object
-                                JSONObject pinpoint = response.getJSONObject(i);
-                                LatLng pinpointLatLng = new LatLng(pinpoint.getDouble("latitude"), pinpoint.getDouble("longitude"));
-                                mMap.addMarker(new MarkerOptions().position(pinpointLatLng).title(pinpoint.getString("title")));
-                            }
-                        }catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.d("Eroare::::",error.toString());
-            }
-        }){
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                Map<String,String> params =  new HashMap<>();
-                String token = username+":"+password;
-                String finalToken = new String(Base64.encode(token.getBytes(),Base64.DEFAULT));
-                Log.d("finalToken", finalToken);
-                params.put("Authorization","Basic "+ finalToken);
-                //..add other headers
-                return params;
-            }
-        };
-
-        queue.add(objectRequest);
-    }
 
     private void enableMyLocation() {
         if (ContextCompat.checkSelfPermission(this,
