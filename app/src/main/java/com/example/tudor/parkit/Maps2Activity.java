@@ -1,8 +1,12 @@
 package com.example.tudor.parkit;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.location.Criteria;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -30,6 +34,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -80,12 +85,18 @@ class PopupAdapter implements GoogleMap.InfoWindowAdapter {
 
 class MarkerInfo {
     Long id;
-    public MarkerInfo(Long id) {
+    String updatedAt;
+    public MarkerInfo(Long id, String updatedAt) {
         this.id = id;
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
         return id;
+    }
+
+    public String getUpdatedAt() {
+        return updatedAt;
     }
 }
 
@@ -97,16 +108,12 @@ public class Maps2Activity extends AppCompatActivity
 
 
 
-    Map<Marker, MarkerInfo> theMap = new HashMap<>();
+    Map<Long, MarkerInfo> theMap = new HashMap<>();
 
     private GoogleMap mMap;
     private String username;
     private String password;
 
-
-    class MarkerDetails {
-        Long id;
-    }
 
     class ClassExecutingTask {
         long delay = 1000 * 100; // delay in milliseconds
@@ -145,12 +152,16 @@ public class Maps2Activity extends AppCompatActivity
                             public void onResponse(JSONArray response) {
                                 try{
                                     // Loop through the array elements
-                                    mMap.clear();
+                                    //mMap.clear();
                                     for(int i=0;i<response.length();i++){
                                         // Get current json object
                                         JSONObject pinpoint = response.getJSONObject(i);
                                         LatLng pinpointLatLng = new LatLng(pinpoint.getDouble("latitude"), pinpoint.getDouble("longitude"));
-                                        mMap.addMarker(new MarkerOptions().position(pinpointLatLng).title(pinpoint.getString("title")));
+
+                                        if (!theMap.containsKey(pinpoint.getLong("id"))) {
+                                            mMap.addMarker(new MarkerOptions().position(pinpointLatLng).title(pinpoint.getString("title")));
+                                            theMap.put(pinpoint.getLong("id"), new MarkerInfo(pinpoint.getLong("id"), pinpoint.getString("updatedAt")));
+                                        }
                                     }
                                 }catch (JSONException e){
                                     e.printStackTrace();
@@ -203,6 +214,20 @@ public class Maps2Activity extends AppCompatActivity
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
 
+            LocationManager manager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+            Criteria mCriteria = new Criteria();
+            String bestProvider = String.valueOf(manager.getBestProvider(mCriteria, true));
+
+
+            Location mLocation = manager.getLastKnownLocation(bestProvider);
+            if (mLocation != null) {
+                Log.e("TAG", "GPS is on");
+                final double currentLatitude = mLocation.getLatitude();
+                final double currentLongitude = mLocation.getLongitude();
+                LatLng loc1 = new LatLng(currentLatitude, currentLongitude);
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLatitude, currentLongitude), 15));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
+            }
 
 
 
