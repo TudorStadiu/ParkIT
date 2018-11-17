@@ -38,12 +38,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-/*
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putInt(getString(R.string.saved_high_score_key), newHighScore);
-        editor.commit();
-        */
+
 
        emailText = findViewById(R.id.email_txt);
        passwordText = findViewById(R.id.password_txt);
@@ -75,6 +70,10 @@ public class LoginActivity extends AppCompatActivity {
                                     String lastName = response.getString("lastName");
                                     Log.d("DEBUG", firstName);
                                     Log.d("DEBUG", lastName);
+                                    SharedPreferences.Editor editor = getSharedPreferences("user_info", MODE_PRIVATE).edit();
+                                    editor.putString("first_name", emailText.getText().toString());
+                                    editor.putString("last_name", passwordText.getText().toString());
+                                    editor.apply();
 
                                     Intent screen3 = new Intent(LoginActivity.this, MapsActivity.class);
                                     startActivity(screen3);
