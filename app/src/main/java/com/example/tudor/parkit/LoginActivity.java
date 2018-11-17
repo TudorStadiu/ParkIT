@@ -63,10 +63,11 @@ public class LoginActivity extends AppCompatActivity {
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
-                                   JSONObject firstname = response.getJSONObject("firstName");
-                                    JSONObject lastname = response.getJSONObject("lastName");
-                                    Log.d("LASTNAME:::",firstname.toString());
-                                   Log.d("FIRSTNAME:::",lastname.toString());
+                                    String firstName = response.getString("firstName");
+                                    String lastName = response.getString("lastName");
+                                    Log.d("DEBUG", firstName);
+                                    Log.d("DEBUG", lastName);
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
