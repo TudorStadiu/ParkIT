@@ -45,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
                 Log.d("PASSWORD:::::",passwordText.getText().toString());
 
                 RequestQueue queue = Volley.newRequestQueue(getBaseContext());
-                String BASEURL ="https://murmuring-journey-83684.herokuapp.com/?fbclid=IwAR0Kn7uYngNDGB0aGgbS9p4N93mv_cwKSEceNIjVruyr6x2EPhSa29641cA";
+                String BASEURL ="https://murmuring-journey-83684.herokuapp.com";
                 String PROFILE ="/profile";
 
 
@@ -67,8 +67,7 @@ public class LoginActivity extends AppCompatActivity {
                 }){
                     @Override
                     public Map<String, String> getHeaders() throws AuthFailureError {
-                        Map<String,String> params =  super.getHeaders();
-                        if(params==null)params = new HashMap<>();
+                        Map<String,String> params =  new HashMap<>();
                         String token = emailText.getText().toString()+":"+passwordText.getText().toString();
                         String finalToken = new String(Base64.encode(token.getBytes(),Base64.DEFAULT));
                         Log.d("finalToken", finalToken);
