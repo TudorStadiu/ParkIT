@@ -51,6 +51,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
+
 class PopupAdapter implements GoogleMap.InfoWindowAdapter {
     LayoutInflater inflater=null;
 
@@ -108,7 +109,7 @@ public class Maps2Activity extends AppCompatActivity
     }
 
     class ClassExecutingTask {
-        long delay = 1000 * 10; // delay in milliseconds
+        long delay = 1000 * 100; // delay in milliseconds
         LoopTask task = new LoopTask();
         Timer timer = new Timer("TaskName");
 
@@ -248,7 +249,7 @@ public class Maps2Activity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -301,17 +302,11 @@ public class Maps2Activity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_mypark) {
             // Handle the camera action
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_report) {
 
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_logout) {
 
         }
 
