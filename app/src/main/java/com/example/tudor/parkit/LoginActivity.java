@@ -75,7 +75,7 @@ public class LoginActivity extends AppCompatActivity {
                                     editor.putString("last_name", passwordText.getText().toString());
                                     editor.apply();
 
-                                    Intent screen3 = new Intent(LoginActivity.this, MapsActivity.class);
+                                    Intent screen3 = new Intent(LoginActivity.this, Maps2Activity.class);
                                     startActivity(screen3);
 
 
