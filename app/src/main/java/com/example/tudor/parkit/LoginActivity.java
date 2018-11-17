@@ -15,8 +15,13 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,14 +54,22 @@ public class LoginActivity extends AppCompatActivity {
                 String PROFILE ="/profile";
 
 
-// Request a string response from the provided URL.
+                JsonObjectRequest objectRequest = new JsonObjectRequest(
+                        Request.Method.GET,
+                        BASEURL+PROFILE,
+                        null,
 
-
-                StringRequest stringRequest = new StringRequest(Request.Method.GET, BASEURL+PROFILE,
-                        new Response.Listener<String>() {
+                        new Response.Listener<JSONObject>() {
                             @Override
-                            public void onResponse(String response) {
-                                loginText.setText("Response is: "+ response);
+                            public void onResponse(JSONObject response) {
+                                try {
+                                   JSONObject firstname = response.getJSONObject("firstName");
+                                    JSONObject lastname = response.getJSONObject("lastName");
+                                    Log.d("LASTNAME:::",firstname.toString());
+                                   Log.d("FIRSTNAME:::",lastname.toString());
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -77,8 +90,7 @@ public class LoginActivity extends AppCompatActivity {
                     }
                 };
 
-// Add the request to the RequestQueue.
-                queue.add(stringRequest);
+                queue.add(objectRequest);
 
             }
         });
