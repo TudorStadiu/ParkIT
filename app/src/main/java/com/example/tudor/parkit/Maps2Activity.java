@@ -11,6 +11,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Base64;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,6 +34,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 import org.json.JSONArray;
@@ -49,15 +51,61 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 
+class PopupAdapter implements GoogleMap.InfoWindowAdapter {
+    LayoutInflater inflater=null;
+
+    PopupAdapter(LayoutInflater inflater) {
+        this.inflater=inflater;
+    }
+
+    @Override
+    public View getInfoWindow(Marker marker) {
+        return(null);
+    }
+
+    @Override
+    public View getInfoContents(Marker marker) {
+        View popup=inflater.inflate(R.layout.popup, null);
+
+        TextView tv=(TextView)popup.findViewById(R.id.title);
+
+        tv.setText(marker.getTitle());
+        tv=(TextView)popup.findViewById(R.id.snippet);
+        tv.setText(marker.getSnippet());
+
+        return(popup);
+    }
+}
+
+class MarkerInfo {
+    Long id;
+    public MarkerInfo(Long id) {
+        this.id = id;
+    }
+
+    public Long getId() {
+        return id;
+    }
+}
+
+
 public class Maps2Activity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
     private static final int REQUEST_LOCATION_PERMISSION = 123;
     //private FusedLocationProviderClient mFusedLocationProviderClient;
 
+
+
+    Map<Marker, MarkerInfo> theMap = new HashMap<>();
+
     private GoogleMap mMap;
     private String username;
     private String password;
 
+
+    class MarkerDetails {
+        Long id;
+    }
 
     class ClassExecutingTask {
         long delay = 1000 * 10; // delay in milliseconds
@@ -137,6 +185,8 @@ public class Maps2Activity extends AppCompatActivity
         enableMyLocation();
         // Add a marker in Sydney and move the camera
 
+        PopupAdapter customInfoWindow = new PopupAdapter(getLayoutInflater());
+        mMap.setInfoWindowAdapter(customInfoWindow);
         ClassExecutingTask executingTask = new ClassExecutingTask();
         executingTask.start();
 
