@@ -1,6 +1,8 @@
 package com.example.tudor.parkit;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
@@ -36,6 +38,12 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+/*
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putInt(getString(R.string.saved_high_score_key), newHighScore);
+        editor.commit();
+        */
 
        emailText = findViewById(R.id.email_txt);
        passwordText = findViewById(R.id.password_txt);
@@ -68,6 +76,10 @@ public class LoginActivity extends AppCompatActivity {
                                     Log.d("DEBUG", firstName);
                                     Log.d("DEBUG", lastName);
 
+                                    Intent screen3 = new Intent(LoginActivity.this, MapsActivity.class);
+                                    startActivity(screen3);
+
+
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                 }
@@ -92,6 +104,9 @@ public class LoginActivity extends AppCompatActivity {
                 };
 
                 queue.add(objectRequest);
+
+
+
 
             }
         });
