@@ -40,7 +40,6 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -73,12 +72,13 @@ class PopupAdapter implements GoogleMap.InfoWindowAdapter {
         return(null);
     }
 
+
+
     @Override
     public View getInfoContents(Marker marker) {
         View popup=inflater.inflate(R.layout.popup, null);
-        popup.setFocusable(true);
-        popup.callOnClick();
-        popup.setClickable(true);
+
+        popup.setOnClickListener(null);
 
         TextView tv=(TextView)popup.findViewById(R.id.title);
 
@@ -117,7 +117,7 @@ class MarkerInfo {
 
 
 public class Maps2Activity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback {
+        implements NavigationView.OnNavigationItemSelectedListener, OnMapReadyCallback, GoogleMap.OnInfoWindowClickListener {
     private static final int REQUEST_LOCATION_PERMISSION = 123;
     //private FusedLocationProviderClient mFusedLocationProviderClient;
 
@@ -174,7 +174,7 @@ public class Maps2Activity extends AppCompatActivity
                                         LatLng pinpointLatLng = new LatLng(pinpoint.getDouble("latitude"), pinpoint.getDouble("longitude"));
 
                                         if (!theMap.containsKey(pinpoint.getLong("id"))) {
-                                            mMap.addMarker(new MarkerOptions().position(pinpointLatLng).title(pinpoint.getString("title")));
+                                            mMap.addMarker(new MarkerOptions().position(pinpointLatLng).title(pinpoint.getString("title"))); //TODO setSnippet id
                                             theMap.put(pinpoint.getLong("id"), new MarkerInfo(pinpoint.getLong("id"), pinpoint.getString("updatedAt")));
                                         }
                                     }
@@ -206,9 +206,14 @@ public class Maps2Activity extends AppCompatActivity
     }
 
     @Override
+    public void onInfoWindowClick(Marker marker) {
+        Log.d("asdf", "merge");
+    }
+
+    @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
+        mMap.setOnInfoWindowClickListener(this);
         enableMyLocation();
         // Add a marker in Sydney and move the camera
 
