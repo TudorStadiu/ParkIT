@@ -4,40 +4,83 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.example.tudor.parkit.RegisterActivity">
+    android:background="@color/azure_white"
+    tools:context="com.example.tudor.parkit.RegisterActivity"
+    tools:layout_editor_absoluteY="81dp">
 
     <EditText
-        android:id="@+id/editText4"
+        android:id="@+id/reg_username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="34dp"
         android:ems="10"
+        android:hint="Username"
         android:inputType="textEmailAddress"
-        tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="94dp" />
+        app:layout_constraintBottom_toTopOf="@+id/reg_password"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="151dp" />
 
     <EditText
-        android:id="@+id/editText5"
+        android:id="@+id/reg_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="33dp"
         android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
-        tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="195dp" />
+        app:layout_constraintBottom_toTopOf="@+id/reg_confirm"
+        app:layout_constraintStart_toStartOf="@+id/reg_username"
+        app:layout_constraintTop_toBottomOf="@+id/reg_username"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="231dp" />
 
     <EditText
-        android:id="@+id/editText6"
+        android:id="@+id/reg_confirm"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="58dp"
         android:ems="10"
+        android:hint="Confirm Password"
         android:inputType="textPassword"
-        tools:layout_editor_absoluteX="84dp"
-        tools:layout_editor_absoluteY="284dp" />
+        app:layout_constraintBottom_toTopOf="@+id/reg_btn"
+        app:layout_constraintStart_toStartOf="@+id/reg_password"
+        app:layout_constraintTop_toBottomOf="@+id/reg_password"
+        tools:layout_editor_absoluteX="85dp"
+        tools:layout_editor_absoluteY="310dp" />
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/reg_btn"
+        android:layout_width="0dp"
+        android:layout_height="51dp"
+        android:layout_marginBottom="46dp"
+        android:layout_marginEnd="67dp"
+        android:layout_marginStart="67dp"
+        android:background="@color/fancy_blue"
+        android:text="Register"
+        android:textColor="@color/white"
+        android:typeface="serif"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/reg_confirm" />
+
+    <TextView
+        android:id="@+id/textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Button"
-        tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="412dp" />
+        android:layout_marginBottom="76dp"
+        android:layout_marginStart="124dp"
+        android:layout_marginTop="34dp"
+        android:text="Sign Up"
+        android:textColor="@color/not_black"
+        android:textSize="30sp"
+        android:typeface="serif"
+        app:layout_constraintBottom_toTopOf="@+id/reg_username"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_editor_absoluteX="124dp"
+        tools:layout_editor_absoluteY="34dp" />
 </android.support.constraint.ConstraintLayout>
