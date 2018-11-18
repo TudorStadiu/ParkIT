@@ -131,7 +131,7 @@ public class Maps2Activity extends AppCompatActivity
 
 
     class ClassExecutingTask {
-        long delay = 1000 * 100; // delay in milliseconds
+        long delay = 1000; // delay in milliseconds
         LoopTask task = new LoopTask();
         Timer timer = new Timer("TaskName");
 
