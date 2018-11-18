@@ -2,6 +2,7 @@ package com.example.tudor.parkit;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
@@ -25,6 +26,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -72,12 +74,23 @@ class PopupAdapter implements GoogleMap.InfoWindowAdapter {
     @Override
     public View getInfoContents(Marker marker) {
         View popup=inflater.inflate(R.layout.popup, null);
+        popup.setFocusable(true);
+        popup.callOnClick();
+        popup.setClickable(true);
 
         TextView tv=(TextView)popup.findViewById(R.id.title);
 
         tv.setText(marker.getTitle());
         tv=(TextView)popup.findViewById(R.id.snippet);
         tv.setText(marker.getSnippet());
+        Button park_here = popup.findViewById(R.id.parkhere);
+        park_here.setOnClickListener(new View.OnClickListener(){
+
+            @Override
+            public void onClick(View view) {
+                Log.d("DEBUG:::","it works");
+            }
+        });
 
         return(popup);
     }
@@ -328,7 +341,8 @@ public class Maps2Activity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_mypark) {
-            // Handle the camera action
+            Intent screen2 = new Intent(Maps2Activity.this, MyParkActivity.class);
+            startActivity(screen2);
         } else if (id == R.id.nav_report) {
 
         } else if (id == R.id.nav_logout) {
