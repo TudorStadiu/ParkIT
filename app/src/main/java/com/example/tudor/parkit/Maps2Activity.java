@@ -36,6 +36,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -125,7 +126,7 @@ public class Maps2Activity extends AppCompatActivity
 
 
 
-    Map<Long, MarkerInfo> theMap = new HashMap<>();
+    Map<Long, Marker> theMap = new HashMap<>();
 
     private GoogleMap mMap;
     private String username;
@@ -175,9 +176,18 @@ public class Maps2Activity extends AppCompatActivity
                                         JSONObject pinpoint = response.getJSONObject(i);
                                         LatLng pinpointLatLng = new LatLng(pinpoint.getDouble("latitude"), pinpoint.getDouble("longitude"));
 
+                                        if (pinpoint.getBoolean("isTaken")) {
+                                            if (theMap.containsKey(pinpoint.getLong("id"))) {
+                                                theMap.get(pinpoint.getLong("id")).remove();
+                                                theMap.remove(pinpoint.getLong("id"));
+                                                continue;
+                                            }
+                                        }
+
+
                                         if (!theMap.containsKey(pinpoint.getLong("id"))) {
-                                            mMap.addMarker(new MarkerOptions().position(pinpointLatLng).title(pinpoint.getString("title")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))); //TODO setSnippet id
-                                            theMap.put(pinpoint.getLong("id"), new MarkerInfo(pinpoint.getLong("id"), pinpoint.getString("updatedAt")));
+                                            Marker marker =  mMap.addMarker(new MarkerOptions().position(pinpointLatLng).title(pinpoint.getString("title")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)).snippet( String.valueOf(pinpoint.getLong("id"))  )); //TODO setSnippet id
+                                            theMap.put(pinpoint.getLong("id"), marker);
                                         }
                                     }
                                 }catch (JSONException e){
@@ -210,6 +220,48 @@ public class Maps2Activity extends AppCompatActivity
     public void onInfoWindowClick(Marker marker) {
         Log.d("asdf", "merge");
         marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
+        theMap.remove(Long.parseLong(marker.getSnippet()));
+
+
+        RequestQueue queue = Volley.newRequestQueue(getBaseContext());
+        String BASEURL ="https://murmuring-journey-83684.herokuapp.com";
+        String PINPOINS ="/reserve/pinpoint/" + marker.getSnippet();
+
+
+
+        JsonObjectRequest objectRequest = new JsonObjectRequest(
+                Request.Method.PUT,
+                BASEURL+PINPOINS,
+                null,
+
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("Eroare::::",error.toString());
+            }
+        }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String,String> params =  new HashMap<>();
+                String token = username+":"+password;
+                String finalToken = new String(Base64.encode(token.getBytes(),Base64.DEFAULT));
+                params.put("Authorization","Basic "+ finalToken);
+                //..add other headers
+                return params;
+            }
+        };
+
+        queue.add(objectRequest);
+
+
+
+
     }
 
     @Override
