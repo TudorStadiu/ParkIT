@@ -41,6 +41,8 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -174,7 +176,7 @@ public class Maps2Activity extends AppCompatActivity
                                         LatLng pinpointLatLng = new LatLng(pinpoint.getDouble("latitude"), pinpoint.getDouble("longitude"));
 
                                         if (!theMap.containsKey(pinpoint.getLong("id"))) {
-                                            mMap.addMarker(new MarkerOptions().position(pinpointLatLng).title(pinpoint.getString("title"))); //TODO setSnippet id
+                                            mMap.addMarker(new MarkerOptions().position(pinpointLatLng).title(pinpoint.getString("title")).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE))); //TODO setSnippet id
                                             theMap.put(pinpoint.getLong("id"), new MarkerInfo(pinpoint.getLong("id"), pinpoint.getString("updatedAt")));
                                         }
                                     }
@@ -193,7 +195,6 @@ public class Maps2Activity extends AppCompatActivity
                         Map<String,String> params =  new HashMap<>();
                         String token = username+":"+password;
                         String finalToken = new String(Base64.encode(token.getBytes(),Base64.DEFAULT));
-                        Log.d("finalToken", finalToken);
                         params.put("Authorization","Basic "+ finalToken);
                         //..add other headers
                         return params;
@@ -208,6 +209,7 @@ public class Maps2Activity extends AppCompatActivity
     @Override
     public void onInfoWindowClick(Marker marker) {
         Log.d("asdf", "merge");
+        marker.setIcon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_RED));
     }
 
     @Override

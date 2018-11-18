@@ -29,6 +29,7 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 public class MyParkActivity extends Activity {
     Button setPark;
@@ -68,10 +69,12 @@ public class MyParkActivity extends Activity {
                 String BASEURL ="https://murmuring-journey-83684.herokuapp.com";
                 String PINPOINS ="/register/pinpoint";
 
+                Random rand = new Random();
+
                 HashMap<String, String> jsonHashMap = new HashMap<>();
                 jsonHashMap.put("latitude", latitude);
                 jsonHashMap.put("longitude", longitude);
-                jsonHashMap.put("title", "Demo");
+                jsonHashMap.put("title", "Demo" + rand.nextInt(100));
 
 
                 JsonObjectRequest objectRequest = new JsonObjectRequest(
