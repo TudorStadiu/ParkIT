@@ -4,7 +4,13 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="blue">#38b6ff</color>
+
     <color name="white">#ffffff</color>
+    <color name="azure_white">#CFE8EF</color>
+    <color name="fancy_blue">#75ABBC</color>
+    <color name="not_black">#124559</color>
+    1
+
 
 
 </resources>
