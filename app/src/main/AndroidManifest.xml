@@ -44,7 +44,9 @@
         <activity
             android:name=".Maps2Activity"
             android:label="@string/title_activity_maps2"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".MyParkActivity" />
+        <activity android:name=".RegisterActivity"></activity>
     </application>
 
 </manifest>

@@ -30,7 +30,7 @@ import java.util.Map;
 
 public class LoginActivity extends AppCompatActivity {
 
-    Button signInButton;
+    Button signInButton, registerButton;
     EditText emailText, passwordText;
     TextView loginText;
 
@@ -45,6 +45,13 @@ public class LoginActivity extends AppCompatActivity {
        signInButton = findViewById(R.id.signin_btn);
        loginText = findViewById(R.id.login_txt);
 
+       registerButton.setOnClickListener(new View.OnClickListener() {
+           @Override
+           public void onClick(View view) {
+               Intent screen4 = new Intent(LoginActivity.this, RegisterActivity.class);
+               startActivity(screen4);
+           }
+       });
 
         signInButton.setOnClickListener(new View.OnClickListener() {
             @Override
