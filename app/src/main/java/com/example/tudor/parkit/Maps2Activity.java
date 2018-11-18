@@ -1,6 +1,7 @@
 package com.example.tudor.parkit;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -37,6 +38,7 @@ import com.android.volley.toolbox.Volley;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -213,6 +215,8 @@ public class Maps2Activity extends AppCompatActivity
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
+            mMap.setPadding(0, 1850, 0, 0);
+
 
             LocationManager manager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
             Criteria mCriteria = new Criteria();
@@ -228,9 +232,6 @@ public class Maps2Activity extends AppCompatActivity
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(currentLatitude, currentLongitude), 15));
                 mMap.animateCamera(CameraUpdateFactory.zoomTo(15), 2000, null);
             }
-
-
-
 
 
 
@@ -257,6 +258,11 @@ public class Maps2Activity extends AppCompatActivity
                 }
         }
     }
+
+    private void userLocationFAB(){
+
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

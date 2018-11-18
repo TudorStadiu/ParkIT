@@ -15,8 +15,8 @@
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="com.example.tudor.parkit.MapsActivity" />
-
+        tools:context="com.example.tudor.parkit.MapsActivity"
+        />
     <Button
         android:id="@+id/lock_btn"
         android:layout_width="wrap_content"
@@ -37,5 +37,6 @@
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/nav_header_maps2"
         app:menu="@menu/activity_maps2_drawer" />
+
 
 </android.support.v4.widget.DrawerLayout>
