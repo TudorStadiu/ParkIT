@@ -17,6 +17,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="title"
+            android:textColor="@color/not_black"
             android:textSize="25sp"
             android:textStyle="bold"/>
 
@@ -26,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="snippet"
+            android:textColor="@color/not_black"
             android:textSize="15sp" />
 
         <TextView
@@ -34,14 +36,16 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="marker id"
+            android:textColor="@color/not_black"
             android:textSize="15sp" />
 
         <Button
             android:id="@+id/parkhere"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-
-            android:text="Park here" />
+            android:textColor="@color/white"
+            android:text="Park here"
+            android:background="@color/fancy_blue"/>
 
     </LinearLayout>
 

@@ -288,6 +288,7 @@ public class Maps2Activity extends AppCompatActivity
         setContentView(R.layout.activity_maps2);
 
 
+
         SharedPreferences prefs = getSharedPreferences("user_info", MODE_PRIVATE);
         username = prefs.getString("first_name", null);
         password = prefs.getString("last_name", null);
@@ -297,6 +298,7 @@ public class Maps2Activity extends AppCompatActivity
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
 
 
 
